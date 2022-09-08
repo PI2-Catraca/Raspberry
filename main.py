@@ -29,6 +29,7 @@ def dowload_pickle(blob_name, file_path, bucket_name):
         return False
 
 schedule.every(0).minutes.do(dowload_pickle, 'encodings.pickle', os.path.join(os.getcwd(), 'encodings.pickle'), bucket_name)
+schedule.every(0).minutes.do(dowload_pickle, 'biometria', os.path.join(os.getcwd(), 'biometria'), bucket_name)
 
 while True:
     schedule.run_pending()
