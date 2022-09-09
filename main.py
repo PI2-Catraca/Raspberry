@@ -6,6 +6,7 @@ import schedule
 import time
 import os
 from google.cloud import storage
+from zipfile import ZipFile
 
 app = FastAPI()
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'aerial-velocity-359918-e385a21f34a1.json'
@@ -28,9 +29,23 @@ def dowload_pickle(blob_name, file_path, bucket_name):
         print(e)
         return False
 
+def extrator() :
+    try:
+        dir = './biometria'
+        os.mkdir(dir)
+    except OSError:
+        print("Diretório dataset já existente.")
+
+    z = ZipFile('biometria.zip', 'r')
+    z.extractall('biometria')
+    z.close()
+
 schedule.every(0).minutes.do(dowload_pickle, 'encodings.pickle', os.path.join(os.getcwd(), 'encodings.pickle'), bucket_name)
-schedule.every(0).minutes.do(dowload_pickle, 'biometria', os.path.join(os.getcwd(), 'biometria'), bucket_name)
+schedule.every(0).minutes.do(dowload_pickle, 'biometria', os.path.join(os.getcwd(), 'biometria.zip'), bucket_name)
+schedule.every(0).minutes.do(extrator)
 
 while True:
     schedule.run_pending()
     time.sleep(60)
+
+    
