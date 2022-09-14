@@ -47,9 +47,6 @@ def blob_metadata(bucket_name, blob_name):
 
     return {'file': blob.name, 'bucket': blob.bucket.name, 'updated': blob.updated}
     
-def last_file(file1, file2):
-    return
-
 def dateFile(date):
   return date['updated']
 
